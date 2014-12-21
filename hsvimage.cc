@@ -116,30 +116,27 @@ DEFUN_DLD (hsvimage, args, ,
     a0=args(0).array_value();
   }
 
+  float H,S,V;
+
   for (int i=0;i<height;i++) {
     for (int j=0;j<width;j++) {
       if (mode==1) {
-	float H = ((octave_value)m0(i,j)).scalar_value();
-	float S = ((octave_value)m1(i,j)).scalar_value();
-	float V = ((octave_value)m2(i,j)).scalar_value();
+	H = ((octave_value)m0(i,j)).scalar_value();
+	S = ((octave_value)m1(i,j)).scalar_value();
+	V = ((octave_value)m2(i,j)).scalar_value();
 
-	setHSV(image,i,j,H,S,V);
       }
       if (mode==2) {
-
-	float H=0.5+(arg(c0(i,j)))*(M_1_PI);
-	float S=1;
-	float V=abs(c0(i,j));
-
-	setHSV(image,i,j,H,S,V);
+	H=0.5+(arg(c0(i,j)))*(M_1_PI);
+	S=1;
+	V=abs(c0(i,j));
       }
       if (mode==3) {
-	float H = ((octave_value)a0(i,j,0)).scalar_value();
-	float S = ((octave_value)a0(i,j,1)).scalar_value();
-	float V = ((octave_value)a0(i,j,2)).scalar_value();
-
-	setHSV(image,i,j,H,S,V);
+	H = ((octave_value)a0(i,j,0)).scalar_value();
+	S = ((octave_value)a0(i,j,1)).scalar_value();
+	V = ((octave_value)a0(i,j,2)).scalar_value();
       }
+      setHSV(image,i,j,H,S,V);
     }
   }
   
