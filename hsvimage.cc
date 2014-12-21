@@ -24,6 +24,11 @@ DEFUN_DLD (hsvimage, args, ,
 
   int mode=check_arguments(args);
 
+  if (mode==0) {
+    error("Illegal arguments");
+    return retval;
+  }
+
   int width=args(0).columns();
   int height=args(0).rows();
 
