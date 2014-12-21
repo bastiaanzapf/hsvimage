@@ -5,6 +5,9 @@
 int check_arguments(octave_value_list args) {
   if (args(0).is_real_matrix()) {
     if (args.length()!=3) {
+      if (args.length()==1) {
+	return 3;
+      }
       error("hsvimage(A,B,C): first parameter is real, so exactly three parameters are required");
       return 0;
     }
@@ -92,18 +95,51 @@ DEFUN_DLD (hsvimage, args, ,
 
   NDArray image(dv);
 
-  ComplexMatrix arg0=args(0).complex_matrix_value();
+  ComplexMatrix c0;
+
+  Matrix m0;
+  Matrix m1;
+  Matrix m2;
+
+  NDArray a0;
+
+  if (mode==1) {
+    m0=args(0).matrix_value();
+    m1=args(1).matrix_value();
+    m2=args(2).matrix_value();
+  }
+  if (mode==2) {
+    c0=args(0).complex_matrix_value();
+  }
+
+  if (mode==3) {
+    a0=args(0).array_value();
+  }
 
   for (int i=0;i<height;i++) {
     for (int j=0;j<width;j++) {
-      //      if (mode==1)
-      Complex arg0_ = ((octave_value)arg0(i,j)).complex_value();
+      if (mode==1) {
+	float H = ((octave_value)m0(i,j)).scalar_value();
+	float S = ((octave_value)m1(i,j)).scalar_value();
+	float V = ((octave_value)m2(i,j)).scalar_value();
 
-      float H=0.5+(arg(arg0(i,j)))*(M_1_PI);
-      float S=1;
-      float V=abs(arg0(i,j));
+	setHSV(image,i,j,H,S,V);
+      }
+      if (mode==2) {
 
-      setHSV(image,i,j,H,S,V);
+	float H=0.5+(arg(c0(i,j)))*(M_1_PI);
+	float S=1;
+	float V=abs(c0(i,j));
+
+	setHSV(image,i,j,H,S,V);
+      }
+      if (mode==3) {
+	float H = ((octave_value)a0(i,j,0)).scalar_value();
+	float S = ((octave_value)a0(i,j,1)).scalar_value();
+	float V = ((octave_value)a0(i,j,2)).scalar_value();
+
+	setHSV(image,i,j,H,S,V);
+      }
     }
   }
   
