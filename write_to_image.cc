@@ -12,13 +12,13 @@ void setRGB(NDArray &x, int i, int j, double R, double G, double B) {
 }
 
 int setHSV(NDArray &x,int i, int j,double H, double S, double V) {
-  if (H>=0 || H<=1) {
+  if (!(H>=0 && H<=1)) {
     return 1;
   }
-  if (S>=0 || S<=1) {
+  if (!(S>=0 && S<=1)) {
     return 2;
   }
-  if (V>=0 || V<=1) {
+  if (!(V>=0 && V<=1)) {
     return 3;
   }
   int h_i=(int)(6*H);
@@ -40,4 +40,5 @@ int setHSV(NDArray &x,int i, int j,double H, double S, double V) {
   } else if (h_i==5) {
     setRGB(x,i,j,V,p,q);
   }
+  return 0;
 }

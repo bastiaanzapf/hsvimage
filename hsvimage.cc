@@ -95,7 +95,19 @@ DEFUN_DLD (hsvimage, args, ,
 	S = ((octave_value)a0(i,j,1)).scalar_value();
 	V = ((octave_value)a0(i,j,2)).scalar_value();
       }
-      setHSV(image,i,j,H,S,V);
+      int result;
+      result=setHSV(image,i,j,H,S,V);
+      if (result!=0) {	
+	char channel='?';
+	switch (result) {
+	case 1: channel = 'H';break;
+	case 2: channel = 'S';break;
+	case 3: channel = 'V';break;
+	}
+	octave_stdout << "Invalid argument in mode " << mode << " : " << channel << " Channel out of bounds at " << i << " " << j << "\n";
+	error("Invalid argument");
+	return retval;
+      }
     }
   }
   
