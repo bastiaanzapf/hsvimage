@@ -50,9 +50,9 @@ void setRGB(NDArray &x, int i, int j, double a, double b, double c) {
 void setHSV(NDArray &x,int i, int j,double H, double S, double V) {
   int h_i=(int)(6*H);
   float f=(6*H)-h_i;
-  float p=0;
-  float q=V*(1-f);
-  float t=V*f;
+  float p=V*(1-S);
+  float q=V*(1-S*f);
+  float t=V*(1-S*(1-f));
   if ( h_i==0 || h_i==6 ){
     setRGB(x,i,j,V,t,p);
   } else if (h_i==1) {
